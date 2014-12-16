@@ -30,7 +30,6 @@
                 "System.Security.Cryptography.Hashing.Algorithms": "4.0.0-beta-*",
                 "System.Text.RegularExpressions": "4.0.10-beta-*",
                 "System.Threading": "4.0.10-beta-*",
-                "System.Threading.ExecutionContext": "4.0.0-beta-*",
                 "System.Threading.Thread": "4.0.0-beta-*",
                 "System.Threading.ThreadPool": "4.0.10-beta-*",
                 "System.Xml.XDocument": "4.0.0-beta-*"
