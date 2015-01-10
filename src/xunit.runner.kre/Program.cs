@@ -340,7 +340,12 @@ namespace Xunit.ConsoleClient
             }
             catch (Exception ex)
             {
-                Console.WriteLine("{0}: {1}", ex.GetType().FullName, ex.Message);
+                lock (consoleLock)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine(ex);
+                    Console.ForegroundColor = ConsoleColor.Gray;
+                }
                 failed = true;
             }
 
