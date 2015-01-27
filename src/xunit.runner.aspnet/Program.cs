@@ -321,11 +321,14 @@ namespace Xunit.Runner.AspNet
                 }
 
                 var diagnosticMessageVisitor = new DiagnosticMessageVisitor(consoleLock, assemblyDisplayName, assembly.Configuration.DiagnosticMessagesOrDefault);
+                var sourceInformationProvider = new SourceInformationProviderAdapater(_services);
 
-                using (var controller = new XunitFrontController(assembly.AssemblyFilename, assembly.ConfigFilename, assembly.ShadowCopy, diagnosticMessageSink: diagnosticMessageVisitor))
+                using (var controller = new XunitFrontController(assembly.AssemblyFilename, assembly.ConfigFilename, assembly.ShadowCopy, diagnosticMessageSink: diagnosticMessageVisitor, sourceInformationProvider: sourceInformationProvider))
                 using (var discoveryVisitor = new TestDiscoveryVisitor())
                 {
-                    controller.Find(includeSourceInformation: false, messageSink: discoveryVisitor, discoveryOptions: discoveryOptions);
+                    var includeSourceInformation = designTime && listTestCases;
+
+                    controller.Find(includeSourceInformation: includeSourceInformation, messageSink: discoveryVisitor, discoveryOptions: discoveryOptions);
                     discoveryVisitor.Finished.WaitOne();
 
                     IDictionary<ITestCase, VsTestCase> vsTestcases = null;
