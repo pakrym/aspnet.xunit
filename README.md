@@ -9,8 +9,7 @@ To install this package, ensure your project.json contains the following lines:
 ```JSON
 {
     "dependencies": {
-        "xunit": "2.0.0-*",
-        "xunit.runner.aspnet": "2.0.0-*"
+        "xunit.runner.aspnet": "2.0.0-aspnet-*"
     },
     "commands": {
         "test": "xunit.runner.aspnet"
