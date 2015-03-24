@@ -21,7 +21,7 @@ To run tests from the command line, use the following.
 
 ```Shell
 # Restore NuGet packages
-kpm restore
+dnu restore
 
 # Run tests
 k test
