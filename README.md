@@ -24,5 +24,5 @@ To run tests from the command line, use the following.
 dnu restore
 
 # Run tests
-k test
+dnx . test
 ```
