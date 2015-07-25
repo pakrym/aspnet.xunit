@@ -6,10 +6,10 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Linq;
-using Microsoft.Framework.Runtime;
-using Microsoft.Framework.TestAdapter;
+using Microsoft.Dnx.Runtime;
+using Microsoft.Dnx.TestAdapter;
 using Xunit.Abstractions;
-using VsTestCase = Microsoft.Framework.TestAdapter.Test;
+using VsTestCase = Microsoft.Dnx.TestAdapter.Test;
 
 namespace Xunit.Runner.AspNet
 {

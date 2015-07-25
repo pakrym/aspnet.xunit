@@ -1,6 +1,6 @@
 ﻿using System;
 using Xunit.Abstractions;
-using TestHostSourceInformationProvider = Microsoft.Framework.TestAdapter.ISourceInformationProvider;
+using TestHostSourceInformationProvider = Microsoft.Dnx.TestAdapter.ISourceInformationProvider;
 
 namespace Xunit.Runner.AspNet
 {
