@@ -24,10 +24,13 @@ namespace Xunit.Runner.AspNet
                 return null;
             }
 
-            var innerInformation = _inner.GetSourceInformation(
-                testCase.TestMethod.TestClass.Class.Name,
-                testCase.TestMethod.Method.Name);
+            var reflectedMethodInfo = testCase.TestMethod as IReflectionMethodInfo;
+            if (reflectedMethodInfo?.MethodInfo == null)
+            {
+                return null;
+            }
 
+            var innerInformation = _inner.GetSourceInformation(reflectedMethodInfo.MethodInfo);
             if (innerInformation == null)
             {
                 return null;
