@@ -24,7 +24,7 @@ namespace Xunit.Runner.AspNet
                 return null;
             }
 
-            var reflectedMethodInfo = testCase.TestMethod as IReflectionMethodInfo;
+            var reflectedMethodInfo = testCase.TestMethod.Method as IReflectionMethodInfo;
             if (reflectedMethodInfo?.MethodInfo == null)
             {
                 return null;
