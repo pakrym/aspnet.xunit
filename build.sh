@@ -1,5 +1,10 @@
 #!/bin/bash
 
+if ! [ -x "$(command -v mono)" ]; then
+  echo >&2 "Could not find 'mono' on the path."
+  exit 1
+fi
+
 if test `uname` = Darwin; then
     cachedir=~/Library/Caches/KBuild
 else
@@ -36,4 +41,3 @@ if ! type dnx > /dev/null 2>&1; then
 fi
 
 mono packages/Sake/tools/Sake.exe -I packages/KoreBuild/build -f makefile.shade "$@"
-
