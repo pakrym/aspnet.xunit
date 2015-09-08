@@ -9,7 +9,7 @@ To install this package, ensure your project.json contains the following lines:
 ```JSON
 {
     "dependencies": {
-        "xunit.runner.aspnet": "2.1.0-aspnet-*"
+        "xunit.runner.aspnet": "2.0.0-aspnet-*"
     },
     "commands": {
         "test": "xunit.runner.aspnet"
@@ -23,6 +23,6 @@ To run tests from the command line, use the following.
 # Restore NuGet packages
 dnu restore
 
-# Run tests (change "." with a folder path if tests are not in the current directory)
-dnx . test
+# Run tests (add "--project" with a folder path if tests are not in the current directory)
+dnx test
 ```

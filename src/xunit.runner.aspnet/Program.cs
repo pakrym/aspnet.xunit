@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -346,6 +346,9 @@ namespace Xunit.Runner.Dnx
                 using (var discoveryVisitor = new TestDiscoveryVisitor())
                 {
                     var includeSourceInformation = designTime && listTestCases;
+
+                    // Discover & filter the tests
+                    reporterMessageHandler.OnMessage(new TestAssemblyDiscoveryStarting(assembly, false, false, discoveryOptions));
 
                     controller.Find(includeSourceInformation: includeSourceInformation, messageSink: discoveryVisitor, discoveryOptions: discoveryOptions);
                     discoveryVisitor.Finished.WaitOne();
