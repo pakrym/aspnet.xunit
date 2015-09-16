@@ -13,11 +13,16 @@
     "frameworks": {
         "dnx451": {
             "frameworkAssemblies": {
-                "System.Threading": ""
+                "System.Collections": "",
+                "System.Threading": "",
+                "System.Xml": "",
+                "System.Xml.Linq": "",
+                "System.Xml.XDocument": ""
             }
         },
         "dnxcore50": {
             "dependencies": {
+                "System.Xml.XDocument": "4.0.11-beta-*",
                 "System.Security.Cryptography.Hashing.Algorithms": "4.0.0-beta-*"
             }
         }
