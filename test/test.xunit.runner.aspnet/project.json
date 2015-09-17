@@ -1,15 +1,7 @@
 {
     "frameworks": {
-        "dnx451": {
-            "frameworkAssemblies": {
-                "System.Threading.Tasks": "4.0.0.0"
-            }
-        },
-        "dnxcore50": {
-            "dependencies": {
-                "System.Threading.Tasks": "4.0.11-beta-*"
-            }
-        }
+        "dnx451": { },
+        "dnxcore50": { }
     },
     "dependencies": {
         "xunit.runner.aspnet": ""
