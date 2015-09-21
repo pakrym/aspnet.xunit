@@ -29,7 +29,7 @@
     },
     "dependencies": {
         "Microsoft.Dnx.Runtime.Abstractions": "1.0.0-*",
-        "Microsoft.Dnx.TestAdapter": "1.0.0-*",
+        "Microsoft.Dnx.Testing.Abstractions": "1.0.0-*",
         "Microsoft.Dnx.TestHost": "1.0.0-*",
         "xunit.assert": "2.1.0-*",
         "xunit.extensibility.execution": "2.1.0-*",
