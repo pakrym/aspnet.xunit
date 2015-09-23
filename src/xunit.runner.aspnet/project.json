@@ -23,7 +23,8 @@
         "dnxcore50": {
             "dependencies": {
                 "System.Xml.XDocument": "4.0.11-beta-*",
-                "System.Security.Cryptography.Hashing.Algorithms": "4.0.0-beta-*"
+                "System.Security.Cryptography.Hashing.Algorithms": "4.0.0-beta-*",
+                "System.Threading.ThreadPool": "4.0.10-beta-*"
             }
         }
     },
