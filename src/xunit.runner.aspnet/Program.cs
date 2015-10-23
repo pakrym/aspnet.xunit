@@ -8,7 +8,7 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
-using Microsoft.Dnx.Runtime;
+using Microsoft.Extensions.PlatformAbstractions;
 using Microsoft.Dnx.Testing.Abstractions;
 using Xunit.Abstractions;
 using VsTestCase = Microsoft.Dnx.Testing.Abstractions.Test;
