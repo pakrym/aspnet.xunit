@@ -8,8 +8,11 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using Microsoft.Dnx.Compilation;
 using Microsoft.Extensions.PlatformAbstractions;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Dnx.Testing.Abstractions;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Xunit.Abstractions;
 using VsTestCase = Microsoft.Dnx.Testing.Abstractions.Test;
 
@@ -17,29 +20,37 @@ namespace Xunit.Runner.Dnx
 {
     public class Program
     {
-        readonly IApplicationEnvironment appEnv;
+        static readonly IApplicationEnvironment appEnv;
 #pragma warning disable 0649
-        volatile bool cancel;
+        static volatile bool cancel;
 #pragma warning restore 0649
-        readonly ConcurrentDictionary<string, ExecutionSummary> completionMessages = new ConcurrentDictionary<string, ExecutionSummary>();
-        bool failed;
-        readonly ILibraryManager libraryManager;
-        IRunnerLogger logger;
-        IMessageSink reporterMessageHandler;
-        readonly IServiceProvider services;
-        readonly IApplicationShutdown shutdown;
+        static readonly ConcurrentDictionary<string, ExecutionSummary> completionMessages = new ConcurrentDictionary<string, ExecutionSummary>();
+        static bool failed;
+        static readonly ILibraryManager libraryManager;
+        static IRunnerLogger logger;
+        static IMessageSink reporterMessageHandler;
+        static IServiceProvider services;
 
-        public Program(IApplicationEnvironment appEnv, IServiceProvider services, ILibraryManager libraryManager, IApplicationShutdown shutdown)
+        static Program()
         {
-            this.appEnv = appEnv;
-            this.services = services;
-            this.libraryManager = libraryManager;
-            this.shutdown = shutdown;
+            appEnv = PlatformServices.Default.Application;
+            libraryManager = PlatformServices.Default.LibraryManager;
         }
 
         [STAThread]
-        public int Main(string[] args)
+        public static int Main(string[] args)
         {
+            var serviceCollection = new ServiceCollection();
+            serviceCollection.TryAdd(ServiceDescriptor.Instance(PlatformServices.Default.Application));
+            serviceCollection.TryAdd(ServiceDescriptor.Instance(PlatformServices.Default.Runtime));
+            serviceCollection.TryAdd(ServiceDescriptor.Instance(PlatformServices.Default.AssemblyLoadContextAccessor));
+            serviceCollection.TryAdd(ServiceDescriptor.Instance(PlatformServices.Default.AssemblyLoaderContainer));
+            serviceCollection.TryAdd(ServiceDescriptor.Instance(PlatformServices.Default.LibraryManager));
+
+            serviceCollection.TryAdd(ServiceDescriptor.Instance(CompilationServices.Default.LibraryExporter));
+            serviceCollection.TryAdd(ServiceDescriptor.Instance(CompilationServices.Default.CompilerOptionsProvider));
+
+            services = serviceCollection.BuildServiceProvider();
             args = Enumerable.Repeat(Path.Combine(appEnv.ApplicationBasePath, appEnv.ApplicationName + ".dll"), 1).Concat(args).ToArray();
 
             try
@@ -52,16 +63,6 @@ namespace Xunit.Runner.Dnx
                     PrintUsage(reporters);
                     return 1;
                 }
-
-                shutdown.ShutdownRequested.Register(() =>
-                {
-                    Console.WriteLine("Execution was cancelled, exiting.");
-#if DNXCORE50
-                    Environment.FailFast(null);
-#else
-                    Environment.Exit(1);
-#endif
-                });
 
 #if !DNXCORE50
                 AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
@@ -145,7 +146,7 @@ namespace Xunit.Runner.Dnx
         }
 #endif
 
-        List<IRunnerReporter> GetAvailableRunnerReporters()
+        static List<IRunnerReporter> GetAvailableRunnerReporters()
         {
             var result = new List<IRunnerReporter>();
 
@@ -184,7 +185,7 @@ namespace Xunit.Runner.Dnx
             return result;
         }
 
-        void PrintHeader()
+        static void PrintHeader()
         {
             var framework = appEnv.RuntimeFramework;
             Console.WriteLine("xUnit.net DNX Runner ({0}-bit {1} {2})", IntPtr.Size * 8, framework.Identifier, framework.Version);
@@ -247,7 +248,7 @@ namespace Xunit.Runner.Dnx
                                   transform.Description);
         }
 
-        int RunProject(XunitProject project,
+        static int RunProject(XunitProject project,
                        bool? parallelizeAssemblies,
                        bool? parallelizeTestCollections,
                        int? maxThreadCount,
@@ -305,7 +306,7 @@ namespace Xunit.Runner.Dnx
             return failed ? 1 : completionMessages.Values.Sum(summary => summary.Failed);
         }
 
-        XElement ExecuteAssembly(object consoleLock,
+        static XElement ExecuteAssembly(object consoleLock,
                                  XunitProjectAssembly assembly,
                                  bool needsXml,
                                  bool? parallelizeTestCollections,

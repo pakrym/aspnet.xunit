@@ -30,6 +30,7 @@
     },
     "dependencies": {
         "Microsoft.Extensions.PlatformAbstractions": "1.0.0-*",
+        "Microsoft.Extensions.DependencyInjection": "1.0.0-*",
         "Microsoft.Dnx.Testing.Abstractions": "1.0.0-*",
         "Microsoft.Dnx.TestHost": "1.0.0-*",
         "xunit.assert": "2.1.0-*",
