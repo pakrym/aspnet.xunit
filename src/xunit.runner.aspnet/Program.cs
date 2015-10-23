@@ -27,14 +27,12 @@ namespace Xunit.Runner.Dnx
         IRunnerLogger logger;
         IMessageSink reporterMessageHandler;
         readonly IServiceProvider services;
-        readonly IApplicationShutdown shutdown;
 
-        public Program(IApplicationEnvironment appEnv, IServiceProvider services, ILibraryManager libraryManager, IApplicationShutdown shutdown)
+        public Program(IApplicationEnvironment appEnv, IServiceProvider services, ILibraryManager libraryManager)
         {
             this.appEnv = appEnv;
             this.services = services;
             this.libraryManager = libraryManager;
-            this.shutdown = shutdown;
         }
 
         [STAThread]
@@ -53,18 +51,10 @@ namespace Xunit.Runner.Dnx
                     return 1;
                 }
 
-                shutdown.ShutdownRequested.Register(() =>
-                {
-                    Console.WriteLine("Execution was cancelled, exiting.");
-#if DNXCORE50
-                    Environment.FailFast(null);
-#else
-                    Environment.Exit(1);
-#endif
-                });
 
 #if !DNXCORE50
                 AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
+#endif
                 Console.CancelKeyPress += (sender, e) =>
                 {
                     if (!cancel)
@@ -74,7 +64,6 @@ namespace Xunit.Runner.Dnx
                         e.Cancel = true;
                     }
                 };
-#endif
 
                 var defaultDirectory = Directory.GetCurrentDirectory();
                 if (!defaultDirectory.EndsWith(new String(new[] { Path.DirectorySeparatorChar })))
